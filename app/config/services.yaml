@@ -1,0 +1,59 @@
+---
+
+##
+# This file is part of the `src-run/simplex-tergum` project.
+#
+# (c) Rob Frawley 2nd <rmf@src.run>
+#
+# For the full copyright and license information, view the LICENSE.md
+# file distributed with this source code.
+##
+
+#
+# import additional resources
+#
+imports:
+
+    - { resource: 'parameters.yaml' }
+
+#
+# parameter values
+#
+parameters:
+
+    app.music.name:         src-run/example-command
+    app.music.version:      0.1.0
+    app.music.author:       Rob Frawley 2nd
+    app.music.email:        rmf@src.run
+    app.music.license:      MIT License
+    app.music.license_link: https://src-run.mit-license.org/
+
+#
+# service definitions
+#
+services:
+
+    # main application
+    app.main:
+        class: SR\ExampleCommand\Application\Application
+        arguments:
+            - "%app.music.name%"
+            - "%app.music.version%"
+            - "%app.music.author%"
+            - "%app.music.email%"
+            - "%app.music.license%"
+            - "%app.music.license_link%"
+        calls:
+            - [ add, [ "@app.command.example" ] ]
+
+    # example command
+    app.command.example:
+        class: SR\ExampleCommand\Command\ExampleCommand
+
+    # console input instance
+    app.console_input:
+        class: Symfony\Component\Console\Input\ArgvInput
+
+    # console output instance
+    app.console_output:
+        class: Symfony\Component\Console\Output\ConsoleOutput
